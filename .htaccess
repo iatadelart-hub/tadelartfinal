@@ -1,0 +1,35 @@
+# =============================================================
+# Tadelart - URLs LIMPIAS (sin .html) para Plesk / Apache
+# NO MODIFICA NADA del código HTML - solo redirecciones y reescritura
+# =============================================================
+
+RewriteEngine On
+
+# 1) REDIRECCIÓN 301 PERMANENTE: quitar ".html" de la URL
+#    /nosotros.html -> /nosotros
+RewriteCond %{THE_REQUEST} \s/+([^.?]+)\.html[\s?] [NC]
+RewriteRule ^ /%1? [R=301,L]
+
+# 2) REDIRECCIÓN 301: quitar barra inclinada final
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.+)/$ /$1 [R=301,L]
+
+# 3) REESCRITURA INTERNA (invisible): si la URL limpia existe como .html, lo sirve
+#    /nosotros -> internamente sirve nosotros.html (el usuario ve /nosotros)
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{DOCUMENT_ROOT}/$1.html -f
+RewriteRule ^(.+?)/?$ $1.html [L]
+
+# 4) Directorio por defecto
+DirectoryIndex index.html
+
+# 5) Sin listado de directorios
+Options -Indexes -MultiViews
+
+# 6) Forzar HTTPS (si tienes SSL activado en Plesk)
+RewriteCond %{HTTPS} off
+RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+
+# 7) Página 404 personalizada
+ErrorDocument 404 /index.html
