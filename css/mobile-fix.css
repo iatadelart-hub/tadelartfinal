@@ -1,10 +1,143 @@
-/* Fix global de márgenes móviles */
+/* =====================================================
+   FIX GLOBAL MENÚ RESPONSIVE (afecta a TODAS las páginas,
+   incluidas originales y landings)
+   ===================================================== */
+
+/* Aseguramos que el botón hamburguesa siempre esté visible
+   y por encima del menú para que se pueda abrir Y cerrar */
+.menu-toggle {
+  z-index: 1000 !important;
+  position: relative !important;
+  cursor: pointer !important;
+  display: none; /* se activa en media query de abajo */
+}
+
+.menu-toggle span {
+  display: block;
+  height: 2px;
+  width: 100%;
+  background-color: var(--text-white, #fff) !important;
+  transition: all 0.3s ease;
+  transform-origin: center;
+}
+
+/* Overlay que aparece cuando el menú está abierto (para cerrar al tocar fuera) */
+body.menu-open::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  z-index: 997;
+  cursor: pointer;
+}
+
+/* En móvil, aseguramos la hamburguesa y el panel del menú */
+@media (max-width: 768px) {
+  .menu-toggle {
+    display: flex !important;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 30px;
+    height: 22px;
+    cursor: pointer;
+  }
+
+  /* Forzamos que el panel del menú tenga las 3 rayas animándose bien */
+  .menu-toggle span:nth-child(1),
+  .menu-toggle span:nth-child(2),
+  .menu-toggle span:nth-child(3) {
+    width: 100% !important;
+    height: 2px !important;
+    background: #fff !important;
+    border-radius: 2px;
+    margin: 0;
+  }
+
+  /* Estado "active" = X */
+  .menu-toggle.active span:nth-child(1) {
+    transform: rotate(45deg) translate(7px, 7px) !important;
+    opacity: 1 !important;
+  }
+  .menu-toggle.active span:nth-child(2) {
+    opacity: 0 !important;
+    transform: translateX(-20px);
+  }
+  .menu-toggle.active span:nth-child(3) {
+    transform: rotate(-45deg) translate(7px, -7px) !important;
+    opacity: 1 !important;
+  }
+
+  /* Panel del menú */
+  .nav-menu {
+    position: fixed !important;
+    top: 0 !important;
+    right: -100% !important;
+    width: 80% !important;
+    max-width: 320px !important;
+    height: 100vh !important;
+    background-color: var(--bg-dark, #0a0a0a) !important;
+    flex-direction: column !important;
+    justify-content: flex-start !important;
+    align-items: center !important;
+    padding: 100px 30px 40px !important;
+    gap: 22px !important;
+    transition: right 0.4s cubic-bezier(0.25, 1, 0.5, 1) !important;
+    box-shadow: -5px 0 30px rgba(0, 0, 0, 0.8) !important;
+    z-index: 998 !important;
+    overflow-y: auto;
+  }
+  .nav-menu.active {
+    right: 0 !important;
+  }
+  .nav-menu li {
+    width: 100%;
+    text-align: center;
+  }
+  .nav-menu .nav-link {
+    font-size: 17px !important;
+    letter-spacing: 2px !important;
+    display: block;
+    padding: 10px 0;
+  }
+  .nav-menu .nav-btn {
+    font-size: 16px !important;
+    width: 80% !important;
+    margin: 10px auto 0 !important;
+    display: inline-block;
+  }
+
+  /* LOGO del menú móvil — MÁS GRANDE */
+  .mobile-menu-logo-item {
+    display: block !important;
+    margin-top: auto !important;
+    margin-bottom: 20px !important;
+    text-align: center !important;
+    width: 100% !important;
+    padding-top: 30px !important;
+  }
+  .mobile-menu-logo-item img {
+    height: 110px !important;   /* antes 70px, ahora más grande */
+    width: auto !important;
+    max-width: 80% !important;
+    object-fit: contain !important;
+    opacity: 0.95 !important;
+  }
+
+  /* Evitamos que el body se desplace cuando el menú está abierto */
+  body.menu-open {
+    overflow: hidden;
+  }
+}
+
+/* =====================================================
+   Fix global de márgenes/padding móviles (contenido)
+   ===================================================== */
 @media (max-width: 768px) {
   .container { padding: 0 18px !important; }
-  section { padding-left: 0 !important; padding-right: 0 !important; }
-  .contact-grid { padding: 0 18px !important; gap: 30px !important; }
+  section { padding-left: 18px !important; padding-right: 18px !important; }
+  .contact-grid { padding: 0 !important; gap: 30px !important; }
   .grid-container { padding: 0 !important; }
-  .metodologia-linear { padding: 0 18px !important; }
+  .metodologia-linear { padding: 0 !important; }
   .hero-simple-content { padding: 0 20px !important; }
   .lead-container { padding: 30px 18px !important; }
   .contact-form-container, .contact-info { padding: 25px 20px !important; }
@@ -12,4 +145,6 @@
   .btn { padding: 12px 22px !important; font-size: 12px !important; }
   .footer-grid { padding: 0 18px !important; gap: 30px !important; }
   .faq-item { padding: 18px 20px !important; margin: 0 0 12px !important; }
+  .blog-post-container { padding: 0 18px !important; }
+  .blog-post-body { padding: 30px 0 !important; }
 }

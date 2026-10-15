@@ -32,17 +32,49 @@ document.addEventListener('DOMContentLoaded', () => {
   const navMenu = document.querySelector('.nav-menu');
   
   if (menuToggle && navMenu) {
-    menuToggle.addEventListener('click', () => {
-      menuToggle.classList.toggle('active');
-      navMenu.classList.toggle('active');
-    });
+    const openMenu = () => {
+      menuToggle.classList.add('active');
+      navMenu.classList.add('active');
+      document.body.classList.add('menu-open');
+    };
+    const closeMenu = () => {
+      menuToggle.classList.remove('active');
+      navMenu.classList.remove('active');
+      document.body.classList.remove('menu-open');
+    };
+    const toggleMenu = (e) => {
+      e.stopPropagation();
+      if (navMenu.classList.contains('active')) {
+        closeMenu();
+      } else {
+        openMenu();
+      }
+    };
+
+    menuToggle.addEventListener('click', toggleMenu);
 
     // Close menu when a link is clicked
     navMenu.querySelectorAll('a').forEach(link => {
-      link.addEventListener('click', () => {
-        menuToggle.classList.remove('active');
-        navMenu.classList.remove('active');
-      });
+      link.addEventListener('click', () => closeMenu());
+    });
+
+    // Close menu when clicking/tapping on the overlay (outside the menu panel)
+    document.addEventListener('click', (e) => {
+      if (!navMenu.classList.contains('active')) return;
+      // If click is outside navMenu AND outside menuToggle, close it
+      if (!navMenu.contains(e.target) && !menuToggle.contains(e.target)) {
+        closeMenu();
+      }
+    });
+
+    // Close menu when pressing Escape
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeMenu();
+    });
+
+    // Ensure menu is closed on resize to desktop
+    window.addEventListener('resize', () => {
+      if (window.innerWidth > 768) closeMenu();
     });
   }
 
