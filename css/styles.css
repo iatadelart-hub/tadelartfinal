@@ -1521,3 +1521,11 @@ footer {
   margin: 0;
   text-shadow: 0 2px 10px rgba(0, 0, 0, 0.9);
 }
+
+/* FOOTER — desplegable "Ver más" de Otras reformas locales (tanda 2) */
+.footer-col details.footer-more { margin-top: 2px; }
+.footer-col details.footer-more summary { cursor: pointer; color: var(--gold); font-size: 14px; margin: 2px 0 10px; }
+.footer-col details.footer-more summary:hover { color: #fff; }
+.footer-col details.footer-more .footer-city { margin-bottom: 8px; font-size: 13px; color: #fff; }
+.footer-col details.footer-more .footer-city a { color: #888; font-size: 13px; }
+.footer-col details.footer-more .footer-city a:hover { color: var(--gold); }
