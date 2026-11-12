@@ -411,12 +411,19 @@ document.addEventListener('DOMContentLoaded', () => {
     
     form.method = 'POST';
     form.target = 'gform_iframe';
+    // Anti-spam sencillo: guardar cuando se cargó el formulario
+    form.dataset.loadedAt = Date.now().toString();
     
     // Add privacy checkbox
     addPrivacyCheckbox(form);
     
     // Handle submission event
     form.addEventListener('submit', (e) => {
+      // Anti-spam: si se envía en menos de 3 segundos, es un bot. No enviar.
+      if (Date.now() - parseInt(form.dataset.loadedAt || '0', 10) < 3000) {
+        e.preventDefault();
+        return;
+      }
       if (formType === 'lead') {
         showCustomModal('', true);
       } 
